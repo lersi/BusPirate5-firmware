@@ -12,8 +12,6 @@ env:
 
 jobs:
   build:
-    env:
-      ADDITIONAL_CMAKE_FLAGS: ""
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -40,6 +38,8 @@ jobs:
         choco install gcc-arm-embedded
         git clone https://github.com/raspberrypi/pico-sdk.git -b master --single-branch "$Env:TEMP\pico-sdk"
         echo "PICO_SDK_PATH=$Env:TEMP\pico-sdk" >> "$env:GITHUB_ENV"
+        echo "CC=arm-none-eabi-gcc.exe" >> "$env:GITHUB_ENV"
+        echo "CCX=arm-none-eabi-g++.exe" >> "$env:GITHUB_ENV"
 
 
     - name: Configure CMake
