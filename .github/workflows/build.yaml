@@ -39,6 +39,7 @@ jobs:
       run: |
         choco install gcc-arm-embedded
         git clone https://github.com/raspberrypi/pico-sdk.git -b master --single-branch "$Env:TEMP\pico-sdk"
+        ehco "creating env variable PICO_SDK_PATH=$Env:TEMP\pico-sdk"
         echo "PICO_SDK_PATH=$Env:TEMP\pico-sdk" >> "$GITHUB_ENV"
 
 
