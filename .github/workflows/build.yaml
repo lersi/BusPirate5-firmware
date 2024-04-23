@@ -20,6 +20,18 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
+    - name: Linux setup
+      if: ${{ matrix.os == 'ubuntu-latest' }}
+      run: sudo apt update && sudo apt install gcc-arm-none-eabi libnewlib-arm-none-eabi libstdc++-arm-none-eabi-newlib
+
+    - name: MacOS setup
+      if: ${{ matrix.os == 'macos-latest'}}
+      run: brew update && brew install --cask gcc-arm-embedded
+
+    - name: Windows setup
+      if: ${{ matrix.os == 'windows-latest'}}
+      run: choco install gcc-arm-embedded
+
     - name: Configure CMake
       run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DPICO_SDK_FETCH_FROM_GIT=TRUE
 
