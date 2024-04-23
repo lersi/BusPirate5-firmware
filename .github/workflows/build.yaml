@@ -12,6 +12,8 @@ env:
 
 jobs:
   build:
+    env:
+      ADDITIONAL_CMAKE_FLAGS: ""
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -22,18 +24,26 @@ jobs:
 
     - name: Linux setup
       if: ${{ matrix.os == 'ubuntu-latest' }}
-      run: sudo apt update && sudo apt install gcc-arm-none-eabi libnewlib-arm-none-eabi libstdc++-arm-none-eabi-newlib
+      run: |
+        sudo apt update && sudo apt install gcc-arm-none-eabi libnewlib-arm-none-eabi libstdc++-arm-none-eabi-newlib
+        echo "PICO_SDK_FETCH_FROM_GIT=TRUE" >> "$GITHUB_ENV"
 
     - name: MacOS setup
       if: ${{ matrix.os == 'macos-latest'}}
-      run: brew update && brew install --cask gcc-arm-embedded
+      run: |
+        brew update && brew install --cask gcc-arm-embedded
+        echo "PICO_SDK_FETCH_FROM_GIT=TRUE" >> "$GITHUB_ENV"
 
     - name: Windows setup
       if: ${{ matrix.os == 'windows-latest'}}
-      run: choco install gcc-arm-embedded
+      run: |
+        choco install gcc-arm-embedded
+        git clone https://github.com/raspberrypi/pico-sdk.git -b master --single-branch "$Env:TEMP\pico-sdk"
+        echo "PICO_SDK_PATH=$Env:TEMP\pico-sdk" >> "$GITHUB_ENV"
+
 
     - name: Configure CMake
-      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DPICO_SDK_FETCH_FROM_GIT=TRUE
+      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
 
     - name: build
       run: cmake --build ${{github.workspace}}/build --target ${{env.BUILD_TARGET}}
