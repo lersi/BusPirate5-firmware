@@ -38,14 +38,17 @@ jobs:
         choco install gcc-arm-embedded
         git clone https://github.com/raspberrypi/pico-sdk.git -b master --single-branch "$Env:TEMP\pico-sdk"
         echo "PICO_SDK_PATH=$Env:TEMP\pico-sdk" >> "$env:GITHUB_ENV"
-        echo "CC=arm-none-eabi-gcc.exe" >> "$env:GITHUB_ENV"
-        echo "CCX=arm-none-eabi-g++.exe" >> "$env:GITHUB_ENV"
 
 
-    - name: Configure CMake
+    - name: Configure CMake Linux & MacOS
+      if: ${{ matrix.os != 'windows-latest'}}
       run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
 
-    - name: build
+    - name: Configure CMake Windows
+      if: ${{ matrix.os == 'windows-latest'}}
+      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DCMAKE_C_COMPILER=arm-none-eabi-gcc.exe -DCMAKE_CXX_COMPILER=arm-none-eabi-g++.exe
+
+    - name: Build
       run: cmake --build ${{github.workspace}}/build --target ${{env.BUILD_TARGET}}
     
     - name: Save Artifacts
