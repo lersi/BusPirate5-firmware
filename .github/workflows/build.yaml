@@ -41,6 +41,9 @@ jobs:
         choco install gcc-arm-embedded
         git clone https://github.com/raspberrypi/pico-sdk.git -b master --single-branch "$Env:TEMP\pico-sdk"
         echo "PICO_SDK_PATH=$Env:TEMP\pico-sdk" >> "$env:GITHUB_ENV"
+        cd "$Env:TEMP\pico-sdk"
+        git submodule init
+        git submodule update
 
 
     - name: Configure CMake Linux & MacOS
