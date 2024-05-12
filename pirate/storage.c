@@ -33,7 +33,8 @@ const char storage_fat_type_labels[][8] = {
     "FAT16",
     "FAT32",
     "EXFAT",
-    "UNKNOWN"};
+    "UNKNOWN"
+};
 
 const char *fresult_msg[]={
 	[FR_OK]="ok",                               /* (0) Succeeded */
@@ -130,7 +131,7 @@ uint8_t storage_format(void){
     fr = f_mkfs("", 0, work_buffer, FF_MAX_SS);
     mem_free(work_buffer);
     if(fr == FR_OK){
-        fr = f_setlabel("Bus_Pirate_5");
+        fr = f_setlabel("Bus_Pirate5");
     }
     return fr;
 }
