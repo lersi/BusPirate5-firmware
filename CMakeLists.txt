@@ -1,4 +1,5 @@
 # == DO NEVER EDIT THE NEXT LINES for Raspberry Pi Pico VS Code Extension to work ==
+if(DEFINED USING_PICO_VSCODE_EXTENSION)
 if(WIN32)
    set(USERHOME $ENV{USERPROFILE})
 else()
@@ -20,6 +21,7 @@ if(PICO_TOOLCHAIN_PATH MATCHES "RISCV")
     if(PICO_TOOLCHAIN_PATH MATCHES "COREV")
         set(PICO_COMPILER pico_riscv_gcc_zcb_zcmp)
     endif()
+endif()
 endif()
 endif()
 # ====================================================================================

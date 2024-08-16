@@ -43,13 +43,21 @@ This project uses `cmake` as the build system, so building the project only take
     > NOTE: WINDOWS users: for some reason the automatic fetch fails because of git submodule, so you will need to clone pico-sdk your self, and then
     > apply the following commands inside the pico-sdk repo:  
     > ```bash
-    > git submodule init
-    > git submodule update
+    > git submodule update --init
     > ```
     
 2. project build  
     `cmake --build ./build --target bus_pirate5_rev10`  
     you may set `bus_pirate5_rev10` to `bus_pirate5_rev8` if the have the development version.
+
+### build using vscode
+
+This should be strait forward and auto config should do the rest.
+
+#### windows users
+Windows users need to pass the following option to cmake: `-DUSING_PICO_VSCODE_EXTENSION`
+You can add the option in the following menu in vscode settings:
+![](./img/cmake_pico_sdk_vscode.png)
     
 ### build using docker
 Instructions on the forum provide additional details; however, this repo provides a docker compose image for you to just get running quickly in the event you want to try patching/hacking.
