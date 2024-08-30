@@ -23,9 +23,6 @@ static const char pin_labels[][5]={
 
 static struct _i2c_mode_config mode_config;
 
-static PIO pio = M_I2C_PIO;
-static uint pio_state_machine = M_I2C_PIO_SM;
-
 // command configuration
 const struct _command_struct hwi2c_commands[]={   //Function Help
 // note: for now the allow_hiz flag controls if the mode provides it's own help
@@ -77,7 +74,7 @@ uint32_t hwi2c_setup(void){
 }
 
 uint32_t hwi2c_setup_exc(void){
-	pio_i2c_init(pio, pio_state_machine, bio2bufiopin[M_I2C_SDA], bio2bufiopin[M_I2C_SCL], bio2bufdirpin[M_I2C_SDA], bio2bufdirpin[M_I2C_SCL], mode_config.baudrate);
+	pio_i2c_init(bio2bufiopin[M_I2C_SDA], bio2bufiopin[M_I2C_SCL], bio2bufdirpin[M_I2C_SDA], bio2bufdirpin[M_I2C_SCL], mode_config.baudrate);
 	system_bio_claim(true, M_I2C_SDA, BP_PIN_MODE, pin_labels[0]);
 	system_bio_claim(true, M_I2C_SCL, BP_PIN_MODE, pin_labels[1]);
 	mode_config.start_sent=false;
@@ -170,7 +167,7 @@ void hwi2c_cleanup(void){
 }
 
 void hwi2c_settings(void){
-	printf("HWI2C (speed)=(%d)", mode_config.baudrate_actual);
+	printf("HWI2C (speed)=(%d)", mode_config.baudrate);
 }
 
 void hwi2c_printI2Cflags(void){
@@ -216,6 +213,10 @@ uint8_t hwi2c_checkshort(void){
 	temp=(bio_get(M_I2C_SDA)==0?1:0);
 	temp|=(bio_get(M_I2C_SCL)==0?2:0);
 	return (temp==3);			// there is only a short when both are 0 otherwise repeated start wont work
+}
+
+uint32_t hwi2c_get_speed(void){
+	return mode_config.baudrate;
 }
 
 

@@ -35,8 +35,9 @@
 #include "commands/global/button_scr.h"
 #include "commands/global/smps.h"
 #include "commands/global/cls.h"
-#include "binmode/logicanalyzer.h"
+#include "commands/global/logic.h"
 #include "commands/global/cmd_binmode.h"
+#include "commands/global/bug.h"
 
 // command configuration
 const struct _command_struct commands[]=
@@ -75,7 +76,7 @@ const struct _command_struct commands[]=
     {"format", true, &disk_format_handler, 0x00 },               // "format" T_HELP_CMD_FORMAT
     {"label", true, &disk_label_handler, 0x00},
     {"d", true, &ui_display_enable_args, T_CMDLN_DISPLAY },         // "d" 
-    {"logic", true, &la_test_args, T_CMDLN_LOGIC },                     // "logic" 
+    {"logic", true, &logic_handler, 0x00 },                     // "logic" 
     {"hex", true, &disk_hex_handler,0x00},                                // "hex"  T_CMDLN_HEX 
     {"pause", true, &pause_handler, 0x00},             // "pause"
     {"dummy", true, &dummy_handler, 0x00 },                              // "dummy"
@@ -87,6 +88,7 @@ const struct _command_struct commands[]=
     {"cls", true, &ui_display_clear, 0x00},
     {"smps", true, &smps_handler, 0x00},
     {"binmode", true, &cmd_binmode_handler, 0x00},
+    {"bug", true, &bug_handler, 0x00},
 };
 
 const uint32_t commands_count=count_of(commands);
